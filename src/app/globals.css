@@ -342,7 +342,9 @@ p {
 .split {
   display: grid;
   gap: clamp(1.5rem, 4vw, 3.5rem);
-  align-items: center;
+  /* Top-aligned, not centred: when the two columns are different heights the
+     slack belongs at the bottom, not split above and below the shorter one. */
+  align-items: start;
   grid-template-columns: 1fr;
 }
 @media (min-width: 860px) {
@@ -380,6 +382,11 @@ p {
 .marks img:hover {
   filter: none;
   opacity: 1;
+}
+
+/* Space between consecutive prose blocks inside one section. */
+.stack {
+  margin-top: clamp(2rem, 4vw, 3rem);
 }
 
 .section-head {

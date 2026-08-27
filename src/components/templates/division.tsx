@@ -5,6 +5,7 @@ import {
   Feature,
   Gallery,
   PageHero,
+  RichText,
   Section,
 } from "@/components/site/blocks";
 import { blocks, docUrl, embeddable, gallery, media, pick, row } from "@/lib/content";
@@ -16,9 +17,9 @@ import { copyFor } from "@/lib/page-copy";
  * the misspelling in `midedle`.
  *
  * The text fields are long and the old site printed them one after another
- * through `nl2br`, which made Elementary a 900-word wall. Here they alternate
- * with the division's own photographs, which is what those nine to eleven
- * image slots were always for.
+ * through `nl2br`, which made Elementary a 900-word wall. Here the parser
+ * restores the headings and lists inside them, so the same words arrive as
+ * sections a parent can skim.
  */
 export type DivisionSlug =
   | "early_years"
@@ -93,9 +94,13 @@ export async function DivisionPage({ slug }: { slug: DivisionSlug }) {
   const embed = c.embed ? embeddable(r[c.embed]) : "";
   const link = c.link ? docUrl(r[c.link]) : "";
 
-  // One photo per body section, alternating sides; the rest become a strip.
-  const paired = photos.slice(0, sections.length);
-  const remainder = photos.slice(sections.length);
+  // The legacy template's field order is `box1 · photo1 · box2 · link ·
+  // photo2..photoN · box3 · box4…`, so the first photograph belongs with the
+  // opening paragraph and the rest are a gallery. Pairing one photo per text
+  // block instead — which is what a generic template does — leaves the long
+  // standards sections next to unrelated pictures, and a screen of white space
+  // beside each of them.
+  const [opening, ...rest] = sections;
 
   return (
     <>
@@ -106,17 +111,25 @@ export async function DivisionPage({ slug }: { slug: DivisionSlug }) {
         image={banner}
       />
 
-      {sections.length ? (
+      {opening ? (
         <Section>
-          {sections.map((body, i) => (
-            <Feature key={i} body={body} image={paired[i]} flip={i % 2 === 1} />
-          ))}
+          <Feature body={opening} image={photos[0]} />
         </Section>
       ) : null}
 
-      {remainder.length ? (
+      {photos.length > 1 ? (
         <Section tone="sand" eyebrow="Around the division" title="Life here">
-          <Gallery images={remainder} />
+          <Gallery images={photos.slice(1)} />
+        </Section>
+      ) : null}
+
+      {rest.length ? (
+        <Section eyebrow="The programme" title={`Inside ${copy.title}`}>
+          {rest.map((body, i) => (
+            <div key={i} className={i ? "stack" : undefined}>
+              <RichText value={body} />
+            </div>
+          ))}
         </Section>
       ) : null}
 

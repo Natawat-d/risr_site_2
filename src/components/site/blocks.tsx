@@ -99,6 +99,27 @@ export function Section({
 
 /* ── alternating text/photo feature ─────────────────────────────────────── */
 
+/**
+ * Text and a photograph.
+ *
+ * Two columns only when the text is short enough to sit beside a picture. The
+ * legacy fields vary from two lines to twelve hundred words in the same column
+ * of the same table, and a 50/50 split with a 5:4 image gives the long ones a
+ * screen-and-a-half of empty column beside them — which is what the first
+ * version of these pages did, and it looked broken rather than airy.
+ *
+ * So: no picture, or a long body, and the text runs as a readable column with
+ * the photograph as a wide band beneath it instead.
+ */
+const SPLIT_LIMIT = 700;
+
+function textLength(body: unknown): number {
+  return blocks(body).reduce(
+    (n, b) => n + (b.kind === "ul" ? b.items.join(" ").length : b.text.length),
+    0,
+  );
+}
+
 export function Feature({
   eyebrow,
   title,
@@ -112,21 +133,63 @@ export function Feature({
   image?: string;
   flip?: boolean;
 }) {
-  if (!blocks(body).length && !image) return null;
+  const length = textLength(body);
+  if (!length && !image) return null;
+
+  const head = (
+    <>
+      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+      {title ? <h2 className={styles.featureTitle}>{title}</h2> : null}
+    </>
+  );
+
+  if (!image || length > SPLIT_LIMIT) {
+    return (
+      <div className={styles.feature}>
+        {head}
+        <RichText value={body} />
+        {image ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img className={styles.featureBand} src={image} alt="" loading="lazy" />
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <div className={`split ${flip ? "split--flip" : ""} ${styles.feature}`}>
       <div>
-        {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
-        {title ? <h2 className={styles.featureTitle}>{title}</h2> : null}
+        {head}
         <RichText value={body} />
       </div>
-      {image ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img className="split__img" src={image} alt="" loading="lazy" />
-      ) : (
-        <div />
-      )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="split__img" src={image} alt="" loading="lazy" />
     </div>
+  );
+}
+
+/* ── captioned photograph ───────────────────────────────────────────────── */
+
+/**
+ * A photograph with the caption that was written for it.
+ *
+ * Several pages store a caption in the text field *after* the image field —
+ * "This photo, dated November 1965, …", "Pictured here is the official opening
+ * ceremony". The old layout put those in a tile beside the picture, which is
+ * why they read as orphaned paragraphs; here they are a `<figcaption>`, which
+ * is what they are.
+ */
+export function Figure({ src, caption }: { src: string; caption: unknown }) {
+  if (!src) return null;
+  const text = blocks(caption);
+  return (
+    <figure className={styles.figure}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" loading="lazy" />
+      {text.length ? (
+        <figcaption>{text.map((b, i) => renderBlock(b, i))}</figcaption>
+      ) : null}
+    </figure>
   );
 }
 

@@ -95,6 +95,48 @@
 .featureTitle {
   margin-bottom: 1rem;
 }
+/* The wide form: a readable column of text with the photograph as a band under
+   it, used whenever the text is too long to sit beside a 5:4 image. */
+.featureBand {
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-top: 2rem;
+  background: var(--sand);
+}
+@media (max-width: 700px) {
+  .featureBand {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* ── figure ─────────────────────────────────────────────────────────────── */
+
+.figure {
+  margin: 0;
+}
+.figure img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+.figure figcaption {
+  margin-top: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  border-left: 2px solid var(--accent);
+  padding-left: 0.9rem;
+}
+.figure figcaption p {
+  margin: 0 0 0.5rem;
+}
+.figure figcaption p:last-child {
+  margin-bottom: 0;
+}
 
 /* ── gallery ────────────────────────────────────────────────────────────── */
 
@@ -102,6 +144,11 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: clamp(0.6rem, 1.5vw, 1rem);
+}
+/* A lone photograph should not stretch to 1240px; the grid would give it the
+   whole row. */
+.gallery img:only-child {
+  max-width: 560px;
 }
 .gallery img {
   width: 100%;
