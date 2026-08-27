@@ -1,0 +1,123 @@
+.footer {
+  background: var(--navy-deep);
+  color: #b9c7dc;
+  padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
+  font-size: 0.95rem;
+}
+
+.top {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .top {
+    grid-template-columns: minmax(260px, 340px) 1fr;
+  }
+}
+
+.name {
+  font-family: var(--display);
+  font-size: 1.65rem;
+  line-height: 1.1;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  margin: 0 0 0.9rem;
+}
+.name span {
+  display: block;
+  font-size: 1.15rem;
+  color: var(--accent-bright);
+}
+
+.address {
+  font-style: normal;
+  line-height: 1.65;
+  margin: 0 0 1.25rem;
+}
+.address a {
+  color: var(--white);
+  text-decoration: none;
+}
+.address a:hover {
+  text-decoration: underline;
+}
+
+.social {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+.social a {
+  color: #b9c7dc;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.social a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.75rem 1.5rem;
+}
+.columns h4 {
+  font-family: var(--body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+  margin: 0 0 0.85rem;
+}
+.columns ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.columns a {
+  color: #cfd9e8;
+  text-decoration: none;
+}
+.columns a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+.bottom {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+.bottom p {
+  margin: 0;
+}
+.bottom ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+}
+.bottom a {
+  color: #b9c7dc;
+  text-decoration: none;
+}
+.bottom a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}

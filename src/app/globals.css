@@ -1,0 +1,403 @@
+/*
+ * risr_site2 design system.
+ *
+ * No Bootstrap and no utility framework: the original site carries Bootstrap 5
+ * plus ~719 inline style attributes from the port, and the whole point of this
+ * app is to stop fighting that. Everything here is hand-written against a small
+ * token set, so a change to the palette is one line rather than a hunt.
+ *
+ * The palette is RISR's own (navy, blue, sand — lifted from the existing
+ * theme.css) plus ONE new colour: a teal accent for calls to action. That is
+ * the only invented value in the file; change --accent and every button,
+ * underline and highlight follows.
+ */
+
+:root {
+  --navy: #1c355e;
+  --navy-deep: #14263f;
+  --blue: #416ba9;
+  --accent: #0f7b8a;
+  --accent-bright: #14a0b3;
+  --sand: #f6f4ef;
+  --ink: #22303f;
+  --ink-soft: #5b6b80;
+  --line: #e3ded3;
+  --white: #fff;
+
+  --wrap: 1240px;
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --radius: 14px;
+  --shadow: 0 2px 4px rgba(20, 38, 63, 0.04), 0 12px 32px rgba(20, 38, 63, 0.08);
+
+  --display: "Bebas Neue", "Arial Narrow", sans-serif;
+  --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans Thai", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Clip sideways spill on body, never on html: the viewport takes its overflow
+   from html unless html is `visible`, and clipping it there cancels every
+   scroll lock a dialog might use. That cost the original site a day. */
+body {
+  overflow-x: hidden;
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--blue);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.04;
+  margin: 0;
+  /* Stated, never inherited. On the original site a hero heading inherited
+     white from its section and theme.css overrode it with navy — navy on navy,
+     invisible, and nothing flagged it because the markup was correct. */
+  color: var(--navy);
+}
+
+h1 {
+  font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+}
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+h3 {
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+/* ── layout ───────────────────────────────────────────────────────────── */
+
+.wrap {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.band {
+  padding-block: clamp(3.5rem, 7vw, 6rem);
+}
+.band--sand {
+  background: var(--sand);
+}
+.band--navy {
+  background: var(--navy);
+  color: #dfe7f2;
+}
+.band--navy h2,
+.band--navy h3 {
+  color: var(--white);
+}
+
+.eyebrow {
+  font-family: var(--body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.75rem;
+}
+.band--navy .eyebrow {
+  color: var(--accent-bright);
+}
+
+.lede {
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  color: var(--ink-soft);
+  max-width: 62ch;
+}
+.band--navy .lede {
+  color: #c3d0e2;
+}
+
+/* ── buttons ──────────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.18s, color 0.18s, border-color 0.18s;
+}
+.btn--accent {
+  background: var(--accent);
+  color: var(--white);
+}
+.btn--accent:hover {
+  background: var(--accent-bright);
+}
+.btn--ghost {
+  border-color: rgba(255, 255, 255, 0.65);
+  color: var(--white);
+}
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.btn--navy {
+  background: var(--navy);
+  color: var(--white);
+}
+.btn--navy:hover {
+  background: var(--navy-deep);
+}
+
+/* ── hero ─────────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  min-height: min(78vh, 720px);
+  display: grid;
+  align-items: end;
+  background: var(--navy);
+  overflow: hidden;
+}
+.hero__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The school's note: "photo of kid on opening page — head is cut off".
+     Anchoring high keeps faces in frame when a wide photo is cropped to a
+     tall viewport; the real fix is a wider source image. */
+  object-position: 50% 28%;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 38, 63, 0.55) 0%,
+    rgba(20, 38, 63, 0.25) 40%,
+    rgba(20, 38, 63, 0.85) 100%
+  );
+}
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(4rem, 10vw, 7rem);
+}
+.hero h1 {
+  color: var(--white);
+  max-width: 18ch;
+}
+.hero__lede {
+  color: #dbe4f0;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  max-width: 52ch;
+  margin: 1.25rem 0 2rem;
+}
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ── stat cards ───────────────────────────────────────────────────────── */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+}
+.stat {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.35rem;
+}
+.stat__figure {
+  font-family: var(--display);
+  font-size: clamp(2.25rem, 3.5vw, 3rem);
+  line-height: 1;
+  color: var(--navy);
+}
+.stat__label {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-top: 0.4rem;
+}
+
+/* ── pillars ──────────────────────────────────────────────────────────── */
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+.pillar__img {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+.pillar h3 {
+  margin: 1rem 0 0.4rem;
+}
+.pillar p {
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ── card grid ────────────────────────────────────────────────────────── */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+.card__img {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  object-fit: cover;
+  background: var(--sand);
+}
+.card__body {
+  padding: 1.15rem 1.25rem 1.4rem;
+  flex: 1;
+}
+.card__meta {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+.card h3 {
+  font-family: var(--body);
+  font-weight: 650;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+  margin: 0.5rem 0 0.4rem;
+  color: var(--navy);
+}
+.card p {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ── split section ────────────────────────────────────────────────────── */
+
+.split {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 860px) {
+  .split {
+    grid-template-columns: 1fr 1fr;
+  }
+  .split--flip > :first-child {
+    order: 2;
+  }
+}
+.split__img {
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+/* ── logo strip ───────────────────────────────────────────────────────── */
+
+.marks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+.marks img {
+  height: 54px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.72;
+  transition: filter 0.2s, opacity 0.2s;
+}
+.marks img:hover {
+  filter: none;
+  opacity: 1;
+}
+
+.section-head {
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+.section-head--row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,241 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--white);
+  box-shadow: 0 1px 0 var(--line);
+}
+
+/* ── utility strip ────────────────────────────────────────────────────── */
+
+.utility {
+  background: var(--navy-deep);
+  color: #b9c7dc;
+  font-size: 0.8rem;
+}
+.utilityInner {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  padding-block: 0.5rem;
+}
+.utilityInner a {
+  color: inherit;
+  text-decoration: none;
+}
+.utilityInner a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+/* ── main bar ─────────────────────────────────────────────────────────── */
+
+.bar {
+  background: var(--white);
+}
+.barInner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 76px;
+}
+
+.brand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+.brand img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+}
+.brandText {
+  font-family: var(--display);
+  font-size: 1.6rem;
+  color: var(--navy);
+  letter-spacing: 0.03em;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 0 0 auto;
+  padding: 0;
+}
+
+.group {
+  position: static;
+}
+
+.groupLabel {
+  font-family: var(--body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--navy);
+  background: none;
+  border: 0;
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.group:hover .groupLabel,
+.group:focus-within .groupLabel {
+  background: var(--sand);
+  color: var(--accent);
+}
+
+/* ── mega-menu ────────────────────────────────────────────────────────── */
+/* Opened on hover AND focus-within, so it is reachable by keyboard. Hidden
+   with visibility rather than display so the transition works and the links
+   stay out of the tab order while closed. */
+
+.mega {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: var(--white);
+  border-top: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.16s, transform 0.16s, visibility 0.16s;
+}
+.group:hover .mega,
+.group:focus-within .mega {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.megaInner {
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) 1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-block: 2rem 2.25rem;
+}
+.megaIntro p:last-child {
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 34ch;
+}
+
+.megaList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.25rem 2rem;
+}
+.megaList a {
+  display: block;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--navy);
+}
+.megaList a:hover {
+  background: var(--sand);
+}
+.megaList span {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+.megaList em {
+  display: block;
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.navCta {
+  margin-left: 0.75rem;
+}
+
+/* ── mobile ───────────────────────────────────────────────────────────── */
+
+.toggleInput,
+.toggle {
+  display: none;
+}
+
+@media (max-width: 1080px) {
+  .toggle {
+    display: block;
+    margin-left: auto;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+  }
+  /* Three bars drawn from one element, so the markup stays a single label. */
+  .toggle span[aria-hidden] {
+    position: absolute;
+    inset: 50% 12px auto;
+    height: 2px;
+    background: var(--navy);
+    box-shadow: 0 -7px 0 var(--navy), 0 7px 0 var(--navy);
+  }
+
+  .menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--white);
+    border-top: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    padding: 0.5rem var(--gutter) 1.5rem;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+  .toggleInput:checked ~ .menu {
+    display: flex;
+  }
+
+  .groupLabel {
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    padding: 0.85rem 0.5rem 0.35rem;
+  }
+  .group:hover .groupLabel {
+    background: none;
+  }
+
+  /* On a phone there is no hover: show every group expanded rather than
+     building a second interaction nobody asked for. */
+  .mega {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border-top: 0;
+  }
+  .megaInner {
+    display: block;
+    padding: 0;
+  }
+  .megaIntro {
+    display: none;
+  }
+  .megaList {
+    grid-template-columns: 1fr;
+  }
+  .navCta {
+    margin: 1rem 0 0;
+  }
+}

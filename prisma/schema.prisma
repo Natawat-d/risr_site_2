@@ -1,0 +1,829 @@
+// RISR public-site schema — mirrors the legacy MySQL `risr_db` 1:1.
+// One model per table, original column names kept so migrated data and the
+// existing admin/uploads filenames line up with zero remapping.
+// Table names are preserved verbatim via @@map (including legacy misspellings
+// like `midedle`); Next.js route paths are chosen independently in the app.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ApplyNow {
+  id           Int     @id @default(autoincrement())
+  apply_banner String?
+  box1         String  @db.Text
+  box2         String  @db.Text
+  box3         String  @db.Text
+  box4         String  @db.Text
+  box5         String  @db.Text
+  box6         String  @db.Text
+  box7         String  @db.Text
+  box8         String  @db.Text
+  box9         String  @db.Text
+  box10        String  @db.Text
+  box11        String  @db.Text
+  box12        String  @db.Text
+
+  @@map("apply_now")
+}
+
+model Artists {
+  id               Int     @id @default(autoincrement())
+  status           Boolean
+  banner_image     String?
+  justify_title    String
+  title            String
+  content1         String  @db.Text
+  link_co          String?
+  justify_content1 String
+  content2         String? @db.Text
+  justify_content2 String?
+  co_image1        String?
+  co_image2        String?
+  co_image3        String?
+  co_image4        String?
+  co_image5        String?
+  co_image6        String?
+
+  @@map("artists")
+}
+
+model Athletics {
+  id               Int     @id @default(autoincrement())
+  status           Boolean
+  banner_image     String?
+  justify_title    String
+  title            String
+  content1         String  @db.Text
+  link_co          String?
+  justify_content1 String
+  content2         String? @db.Text
+  justify_content2 String?
+  co_image1        String?
+  co_image2        String?
+  co_image3        String?
+  co_image4        String?
+  co_image5        String?
+  co_image6        String?
+
+  @@map("athletics")
+}
+
+model BookATour {
+  id        Int    @id @default(autoincrement())
+  book_link String @db.Text
+
+  /// Landing-page content. Marketing asked for a page of our own before the
+  /// visitor is handed to the external booking system, so a family reads what
+  /// a tour involves on our site rather than meeting a third-party form cold.
+  /// Blank fields fall back to sensible copy, so the page works before anyone
+  /// fills these in.
+  heading        String? @db.Text
+  intro          String? @db.Text
+  what_to_expect String? @db.Text
+  duration       String? @db.Text
+  who_you_meet   String? @db.Text
+  cta_label      String? @db.Text
+  banner_image   String? @db.Text
+  photo1         String? @db.Text
+  photo2         String? @db.Text
+
+  @@map("book_a_tour")
+}
+
+model Community {
+  id   Int    @id @default(autoincrement())
+  box1 String @db.Text
+  box2 String @db.Text
+  box3 String @db.Text
+
+  @@map("community")
+}
+
+model Contact {
+  id             Int     @id @default(autoincrement())
+  contact_banner String?
+
+  @@map("contact")
+}
+
+model ContactForm {
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String
+  telephone  String?
+  subject    String
+  comment    String?   @db.Text
+  status     Int?
+  created_at DateTime? @default(now())
+
+  @@map("contact_form")
+}
+
+model Counseling {
+  id               Int     @id @default(autoincrement())
+  banner_image     String
+  title            String
+  justify_title    String
+  content1         String  @db.Text
+  link_co          String  @db.Text
+  co_image1        String?
+  co_image2        String?
+  co_image3        String?
+  content2         String? @db.Text
+  justify_content1 String
+  justify_content2 String?
+  co_image4        String?
+  co_image5        String?
+  co_image6        String?
+  status           Int
+
+  @@map("counseling")
+}
+
+model Curriculum {
+  id                Int     @id @default(autoincrement())
+  curriculum_banner String?
+  box1              String  @db.Text
+
+  @@map("curriculum")
+}
+
+model Daily {
+  id     Int     @id @default(autoincrement())
+  box1   String  @db.Text
+  box2   String  @db.Text
+  box3   String  @db.Text
+  photo1 String?
+  photo2 String?
+
+  @@map("daily")
+}
+
+model Elementary {
+  id         Int     @id @default(autoincrement())
+  ele_banner String?
+  ele_photo1 String?
+  ele_photo2 String?
+  ele_photo3 String?
+  ele_photo4 String?
+  ele_photo5 String?
+  ele_photo6 String?
+  ele_photo7 String?
+  box1       String  @db.Text
+  box2       String  @db.Text
+  box3       String  @db.Text
+  box4       String  @db.Text
+  box5       String  @db.Text
+  link       String  @db.Text
+
+  @@map("elementary")
+}
+
+model Extended {
+  id               Int     @id @default(autoincrement())
+  status           Boolean
+  banner_image     String?
+  justify_title    String
+  title            String
+  content1         String  @db.Text
+  link_co          String?
+  justify_content1 String
+  content2         String? @db.Text
+  justify_content2 String?
+  co_image1        String?
+  co_image2        String?
+  co_image3        String?
+  co_image4        String?
+  co_image5        String?
+  co_image6        String?
+
+  @@map("extended")
+}
+
+model High {
+  id           Int     @id @default(autoincrement())
+  high_banner  String?
+  high_photo1  String?
+  high_photo2  String?
+  high_photo3  String?
+  high_photo4  String?
+  high_photo5  String?
+  high_photo6  String?
+  high_photo7  String?
+  high_photo8  String?
+  high_photo9  String?
+  high_photo10 String?
+  high_photo11 String?
+  box1         String  @db.Text
+  box2         String  @db.Text
+  box3         String  @db.Text
+  box4         String  @db.Text
+  box5         String  @db.Text
+  box6         String  @db.Text
+  box7         String  @db.Text
+  link         String  @db.Text
+  box8         String  @db.Text
+
+  @@map("high")
+}
+
+model History {
+  id         Int     @id @default(autoincrement())
+  his_banner String?
+  link_his   String  @db.Text
+  box1       String  @db.Text
+  box2       String  @db.Text
+  box3       String  @db.Text
+  box4       String  @db.Text
+  box5       String  @db.Text
+  box6       String  @db.Text
+  box7       String  @db.Text
+  box8       String  @db.Text
+  box9       String  @db.Text
+  box10      String  @db.Text
+  box11      String  @db.Text
+  box12      String  @db.Text
+  his_photo1 String?
+  his_photo2 String?
+  his_photo3 String?
+  his_photo4 String?
+  his_photo5 String?
+  his_photo6 String?
+  his_photo7 String?
+  his_photo8 String?
+
+  @@map("history")
+}
+
+model Home {
+  id                 Int     @id @default(autoincrement())
+  home_video         String?
+  home_logo1         String?
+  home_logo2         String?
+  home_logo3         String?
+  home_logo4         String?
+  home_logo5         String?
+  home_logo6         String?
+  home_logo7         String?
+  home_box1          String? @db.Text
+  home_pic1          String?
+  home_pic2          String?
+  home_pic3          String?
+  home_pic4          String?
+  home_OUR           String? @db.Text
+  home_VISION        String? @db.Text
+  home_MISSION       String? @db.Text
+  home_SCHOOLWIDE    String? @db.Text
+  home_imgSCHOOLWIDE String?
+  home_COMMUNITY     String? @db.Text
+  home_RATCHAPRUEK   String? @db.Text
+  home_pic5          String?
+  home_pic6          String?
+  home_pic7          String?
+  home_pic8          String?
+  home_Care          String? @db.Text
+  home_community_why String? @db.Text
+  home_compassion    String? @db.Text
+  home_connection    String? @db.Text
+  modal              String?
+  show_modal         Boolean
+  show_banner_action Boolean
+  home_pic9          String?
+
+  @@map("home")
+}
+
+model HouseSystem {
+  id               Int      @id @default(autoincrement())
+  status           Boolean?
+  banner_image     String?
+  justify_title    String?
+  title            String?
+  justify_content1 String?
+  content1         String?  @db.Text
+  co_image1        String?
+  co_image2        String?
+  co_image3        String?
+  co_image6        String?
+  justify_content2 String?
+  content2         String?  @db.Text
+  co_image4        String?
+  co_image5        String?
+  justify_content3 String?
+  content3         String?  @db.Text
+  co_image7        String
+  co_image12       String
+  co_image8        String
+  co_image9        String
+  co_image10       String
+  co_image11       String
+
+  @@map("house_system")
+}
+
+model LeadershipOp {
+  id                  Int    @id @default(autoincrement())
+  details_leader      String @db.Text
+  details_leader_link String @db.Text
+
+  @@map("leadership_op")
+}
+
+model Links {
+  id   Int    @id @default(autoincrement())
+  box1 String @db.Text
+  box2 String @db.Text
+  box3 String @db.Text
+
+  @@map("links")
+}
+
+model Midedle {
+  id         Int     @id @default(autoincrement())
+  mid_banner String?
+  mid_photo1 String?
+  mid_photo2 String?
+  mid_photo3 String?
+  mid_photo4 String?
+  mid_photo5 String?
+  mid_photo6 String?
+  mid_photo7 String?
+  mid_photo8 String?
+  mid_photo9 String?
+  box1       String  @db.Text
+  box2       String  @db.Text
+  box3       String  @db.Text
+  box4       String  @db.Text
+  link       String  @db.Text
+
+  @@map("midedle")
+}
+
+model News {
+  id               Int       @id @default(autoincrement())
+  news_image       String
+  banner_image     String
+  date             DateTime  @db.Date
+  title            String
+  summary          String    @db.Text
+  content1         String    @db.Text
+  news_image1      String?
+  news_image2      String?
+  news_image3      String?
+  content2         String?   @db.Text
+  news_image4      String?
+  news_image5      String?
+  news_image6      String?
+  category         String
+  justify_title    String
+  justify_content1 String
+  justify_content2 String?
+  created_at       DateTime? @default(now())
+
+  @@map("news")
+}
+
+model Newsletter {
+  id            Int     @id @default(autoincrement())
+  newsle_banner String?
+  box1          String? @db.Text
+  box2          String? @db.Text
+  box3          String? @db.Text
+  box4          String? @db.Text
+  box5          String? @db.Text
+  box6          String? @db.Text
+  box7          String? @db.Text
+  box8          String? @db.Text
+  box9          String? @db.Text
+  box10         String? @db.Text
+  box11         String? @db.Text
+  box12         String? @db.Text
+  box13         String? @db.Text
+  box14         String? @db.Text
+  box15         String? @db.Text
+  box16         String? @db.Text
+  box17         String? @db.Text
+  box18         String? @db.Text
+  box19         String? @db.Text
+  box20         String? @db.Text
+  box21         String? @db.Text
+  box22         String? @db.Text
+  box23         String? @db.Text
+  box24         String? @db.Text
+  box25         String? @db.Text
+
+  @@map("newsletter")
+}
+
+model NewBanner {
+  id          Int       @id @default(autoincrement())
+  news_banner String
+  created_at  DateTime? @default(now())
+
+  @@map("new_banner")
+}
+
+model NonTeachingOp {
+  id                        Int    @id @default(autoincrement())
+  details_non_teaching      String @db.Text
+  details_non_teaching_link String @db.Text
+
+  @@map("non_teaching_op")
+}
+
+model Pop {
+  id               Int     @id @default(autoincrement())
+  status           Boolean
+  banner_image     String?
+  justify_title    String
+  title            String
+  content1         String  @db.Text
+  link_co          String?
+  justify_content1 String
+  content2         String? @db.Text
+  justify_content2 String?
+  co_image1        String?
+  co_image2        String?
+  co_image3        String?
+  co_image4        String?
+  co_image5        String?
+  co_image6        String?
+
+  @@map("pop")
+}
+
+model Portals {
+  id       Int     @id @default(autoincrement())
+  box1     String  @db.Text
+  box2     String  @db.Text
+  dis_box1 Boolean
+  dis_box2 Boolean
+
+  @@map("portals")
+}
+
+model PreKindergarten {
+  id         Int     @id @default(autoincrement())
+  pre_banner String?
+  pre_photo1 String?
+  pre_photo2 String?
+  pre_photo3 String?
+  pre_photo4 String?
+  pre_photo5 String?
+  pre_photo6 String?
+  pre_photo7 String?
+  pre_photo8 String?
+  pre_photo9 String?
+  box1       String  @db.Text
+  box2       String  @db.Text
+  box3       String  @db.Text
+  box4       String  @db.Text
+  link       String  @db.Text
+
+  @@map("pre_kindergarten")
+}
+
+model SchoolCalendar {
+  id                Int     @id @default(autoincrement())
+  calendar_banner   String?
+  calendar_photo1   String?
+  calendar_photo2   String?
+  link_calender1    String  @db.Text
+  display_calendar1 Boolean
+  link_calender2    String  @db.Text
+  display_calendar2 Boolean
+  link_calender     String  @db.Text
+  box1              String  @db.Text
+  box2              String  @db.Text
+  display_calendar3 Boolean
+  display_calendar4 Boolean
+  display_calendar5 Boolean
+  display_calendar6 Boolean
+  link_1            String  @db.Text
+  link_2            String  @db.Text
+  link_3            String  @db.Text
+  link_4            String  @db.Text
+
+  @@map("school_calendar")
+}
+
+model Ser {
+  id               Int       @id @default(autoincrement())
+  title            String
+  content1         String    @db.Text
+  content2         String?   @db.Text
+  banner_image     String?
+  co_image1        String?
+  co_image2        String?
+  co_image3        String?
+  co_image4        String?
+  co_image5        String?
+  co_image6        String?
+  justify_title    String?
+  justify_content1 String?
+  justify_content2 String?
+  link_co          String?
+  status           Boolean
+  created_at       DateTime? @default(now())
+  updated_at       DateTime? @default(now()) @updatedAt
+
+  @@map("ser")
+}
+
+model Student {
+  id   Int    @id @default(autoincrement())
+  box1 String @db.Text
+
+  @@map("student")
+}
+
+model SummerSchool {
+  id                  Int      @id @default(autoincrement())
+  summer_status       Boolean
+  high_banner         String?
+  high_photo1         String?
+  program_description String?  @db.Text
+  new_students        String?  @db.Text
+  link_register1      String?  @db.Text
+  early_years         String?  @db.Text
+  pre_photo2          String?
+  pre_photo3          String?
+  pre_photo4          String?
+  pre_photo5          String?
+  pre_photo6          String?
+  pre_photo7          String?
+  pre_photo8          String?
+  pre_photo9          String?
+  elementary_school   String?  @db.Text
+  high_photo2         String?
+  high_photo3         String?
+  high_photo4         String?
+  high_photo5         String?
+  secondary_school    String?  @db.Text
+  high_photo6         String?
+  high_photo7         String?
+  high_photo8         String?
+  high_photo9         String?
+  link_register2      String?  @db.Text
+  how_to_apply        String?  @db.Text
+  who_can_apply       String?  @db.Text
+  tuition_fees        String?  @db.Text
+  more_information    String?  @db.Text
+  created_at          DateTime @default(now())
+  updated_at          DateTime @default(now()) @updatedAt
+
+  @@map("summer_school")
+}
+
+model TeachingOp {
+  id                    Int    @id @default(autoincrement())
+  details_teaching      String @db.Text
+  details_teaching_link String @db.Text
+
+  @@map("teaching_op")
+}
+
+model Timeline {
+  id         Int     @id @default(autoincrement())
+  time_line1 String?
+  time_line2 String?
+  time_line3 String?
+  time_line4 String?
+  time_line5 String?
+  time_line6 String?
+  time_line7 String?
+  time_line8 String?
+
+  @@map("timeline")
+}
+
+model TuitionFees {
+  id           Int     @id @default(autoincrement())
+  header_tui1  String  @db.Text
+  link_tui1    String  @db.Text
+  display_tui1 Boolean
+  header_tui2  String  @db.Text
+  link_tui2    String  @db.Text
+  display_tui2 Boolean
+  tui_banner   String
+
+  @@map("tuition_fees")
+}
+
+model User {
+  id         Int     @id @default(autoincrement())
+  email      String
+  password   String
+  role       String
+  privileges String?
+  type       String
+
+  @@map("user")
+}
+
+model Vision {
+  id         Int     @id @default(autoincrement())
+  vis_banner String?
+  vis_photo1 String?
+  vis_photo2 String?
+  vis_photo3 String?
+  vis_photo4 String?
+  vis_photo5 String?
+  vis_photo6 String?
+  box1       String  @db.Text
+  box2       String  @db.Text
+  box3       String  @db.Text
+  box4       String  @db.Text
+  box5       String  @db.Text
+  box6       String  @db.Text
+  box7       String  @db.Text
+  box8       String  @db.Text
+
+  @@map("vision")
+}
+
+model Weekwall {
+  id               Int       @id @default(autoincrement())
+  title            String
+  content1         String    @db.Text
+  content2         String?   @db.Text
+  banner_image     String?
+  co_image1        String?
+  co_image2        String?
+  co_image3        String?
+  co_image4        String?
+  co_image5        String?
+  co_image6        String?
+  justify_title    String?
+  justify_content1 String?
+  justify_content2 String?
+  link_co          String?
+  status           Boolean
+  created_at       DateTime? @default(now())
+  updated_at       DateTime? @default(now()) @updatedAt
+
+  @@map("weekwall")
+}
+
+model WorkRisr {
+  id            Int     @id @default(autoincrement())
+  banner_image  String?
+  work_box1     String  @db.Text
+  work_pic1     String?
+  work_pic2     String?
+  work_pic3     String?
+  work_box2     String  @db.Text
+  work_pdf_link String  @db.Text
+  work_box3     String  @db.Text
+
+  @@map("work_risr")
+}
+
+/// Accreditations and memberships, as a page of their own.
+///
+/// Singleton with numbered slots, the same shape as every other content table
+/// here (`home_logo1..7`, `home_pic1..9`): it keeps the schema-driven admin
+/// editor working with no bespoke page, which is the whole reason that pattern
+/// is used. Empty slots are skipped when the page renders.
+model Accreditation {
+  id      Int     @id @default(autoincrement())
+  heading String? @db.Text
+  intro   String? @db.Text
+
+  banner_image String? @db.Text
+
+  logo1   String? @db.Text
+  name1   String? @db.Text
+  detail1 String? @db.Text
+  link1   String? @db.Text
+
+  logo2   String? @db.Text
+  name2   String? @db.Text
+  detail2 String? @db.Text
+  link2   String? @db.Text
+
+  logo3   String? @db.Text
+  name3   String? @db.Text
+  detail3 String? @db.Text
+  link3   String? @db.Text
+
+  logo4   String? @db.Text
+  name4   String? @db.Text
+  detail4 String? @db.Text
+  link4   String? @db.Text
+
+  logo5   String? @db.Text
+  name5   String? @db.Text
+  detail5 String? @db.Text
+  link5   String? @db.Text
+
+  logo6   String? @db.Text
+  name6   String? @db.Text
+  detail6 String? @db.Text
+  link6   String? @db.Text
+
+  logo7   String? @db.Text
+  name7   String? @db.Text
+  detail7 String? @db.Text
+  link7   String? @db.Text
+
+  logo8   String? @db.Text
+  name8   String? @db.Text
+  detail8 String? @db.Text
+  link8   String? @db.Text
+
+  @@map("accreditations")
+}
+
+/// Open House / Open Day page content, and whether registration is taking place.
+model OpenHouse {
+  id           Int     @id @default(autoincrement())
+  heading      String? @db.Text
+  intro        String? @db.Text
+  /// Free text — "Saturday 14 September, 9:00–12:00". Kept as text rather than
+  /// a date because the school writes these as a phrase, sometimes for several
+  /// sessions at once.
+  when_text    String? @db.Text
+  where_text   String? @db.Text
+  details      String? @db.Text
+  banner_image String? @db.Text
+  photo1       String? @db.Text
+
+  /// Off hides the form and shows the closed message instead. Marketing turns
+  /// this on for the weeks an Open House is actually being run.
+  registration_open Boolean @default(true)
+  closed_message    String? @db.Text
+  /// Optional: hand registration to an external system instead of our form.
+  external_link     String? @db.Text
+
+  @@map("open_house")
+}
+
+/// One Open House registration, from the public form.
+model OpenHouseRegistration {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.Text
+  email      String   @db.Text
+  telephone  String?  @db.Text
+  /// Which year group the child would enter — the question admissions asks first.
+  grade      String?  @db.Text
+  attendees  Int      @default(1)
+  message    String?  @db.Text
+  /// 0 = new, 1 = contacted. Mirrors contact_form's read/unread flag.
+  status     Int      @default(0)
+  created_at DateTime @default(now())
+
+  @@map("open_house_registration")
+}
+
+/// The homepage pop-up: one to three slides that rotate on their own.
+///
+/// Admin-managed, because Marketing asked to add and remove these themselves
+/// rather than send us a request each time. A slide with no image is skipped,
+/// so "how many pop-ups are there" is answered by filling in one, two or three
+/// slots — there is no count to keep in step.
+///
+/// `enabled` off hides it entirely without clearing the slides, which is what
+/// you want between campaigns.
+model Popup {
+  id      Int     @id @default(autoincrement())
+  enabled Boolean @default(false)
+
+  /// Seconds each slide is shown before the next. Ignored with one slide.
+  interval_seconds Int @default(5)
+
+  image1 String? @db.Text
+  link1  String? @db.Text
+  alt1   String? @db.Text
+
+  image2 String? @db.Text
+  link2  String? @db.Text
+  alt2   String? @db.Text
+
+  image3 String? @db.Text
+  link3  String? @db.Text
+  alt3   String? @db.Text
+
+  @@map("popup")
+}
+
+/// Site-wide branding. Separate from `home` because the logo is on every page,
+/// not just the homepage — and because a school changing its crest should not
+/// have to open a thirty-field homepage editor to do it.
+model Branding {
+  id      Int     @id @default(autoincrement())
+  /// The mark in the top navigation bar. Empty falls back to the ported
+  /// /img/nav_top.png, so clearing it restores the original rather than
+  /// leaving a gap.
+  logo    String?
+  /// The small icon browsers show on the tab. Empty falls back to /logo.png.
+  favicon String?
+
+  @@map("branding")
+}
