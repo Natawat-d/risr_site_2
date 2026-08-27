@@ -40,6 +40,12 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/package.json ./package.json
+# next.config.ts and tsconfig.json are needed at RUNTIME, not just at build:
+# `next start` re-reads the config to learn its basePath. Without them the
+# server routes at / while the pre-built HTML asks for /risr2/_next — every
+# page 404s and the assets 404 with it.
+COPY --from=build /app/next.config.ts ./next.config.ts
+COPY --from=build /app/tsconfig.json ./tsconfig.json
 
 RUN mkdir -p /app/uploads && chown -R nextjs:nodejs /app
 USER nextjs
