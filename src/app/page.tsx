@@ -14,15 +14,21 @@ export const dynamic = "force-dynamic";
  */
 type Row = Record<string, unknown>;
 
-const STATS = [
-  { figure: "1957", label: "Educating in Bangkok since" },
-  { figure: "IB", label: "Diploma Programme authorised" },
-  { figure: "Pre-K–12", label: "One campus, every year group" },
-  { figure: "WASC", label: "Fully accredited" },
-];
+/**
+ * Fallbacks, used only when the New Site — Homepage editor has been cleared.
+ * The migration seeds the table with exactly these values, so in practice the
+ * school is editing them rather than meeting them.
+ */
+const DEFAULT_HERO = {
+  heading: "Engaged learning for a changing world",
+  lede:
+    "A Catholic school offering an interfaith, inclusive and academically " +
+    "rigorous education on one campus in Nonthaburi.",
+};
 
 export default async function HomePage() {
   const home = await row("home");
+  const v2 = await row("site2_home");
   const news = (await delegate("news").findMany({
     orderBy: { date: "desc" },
     take: 3,
@@ -39,7 +45,24 @@ export default async function HomePage() {
     { title: "Connection", body: home.home_connection, img: home.home_pic8 },
   ].filter((p) => pick(p.body) || media(p.img));
 
-  const hero = media(home.home_pic3);
+  // The banner photograph is its own field so the school can give the new
+  // design a wide shot without disturbing the old site — their first note was
+  // that this photo has a head cut off, which is a cropping problem.
+  const hero = media(v2.hero_image) || media(home.home_pic3);
+
+  const ctas = [1, 2, 3]
+    .map((n) => ({
+      label: pick(v2[`cta${n}_label`]),
+      href: pick(v2[`cta${n}_link`]),
+    }))
+    .filter((c) => c.label && c.href);
+
+  const stats = [1, 2, 3, 4]
+    .map((n) => ({
+      figure: pick(v2[`stat${n}_figure`]),
+      label: pick(v2[`stat${n}_label`]),
+    }))
+    .filter((s) => s.figure);
   const vision = pick(home.home_VISION);
   const mission = pick(home.home_MISSION);
 
@@ -52,30 +75,30 @@ export default async function HomePage() {
           <img className="hero__media" src={hero} alt="" fetchPriority="high" />
         ) : null}
         <div className={`wrap hero__inner`}>
-          <h1>Engaged learning for a changing world</h1>
-          <p className="hero__lede">
-            A Catholic school offering an interfaith, inclusive and academically
-            rigorous education on one campus in Nonthaburi.
-          </p>
-          <div className="hero__cta">
-            <Link className="btn btn--accent" href="/apply_now">
-              How to Apply
-            </Link>
-            <Link className="btn btn--ghost" href="/book_a_tour">
-              Book a Tour
-            </Link>
-            <Link className="btn btn--ghost" href="/open_house">
-              Open House
-            </Link>
-          </div>
+          <h1>{pick(v2.hero_heading) || DEFAULT_HERO.heading}</h1>
+          <p className="hero__lede">{pick(v2.hero_lede) || DEFAULT_HERO.lede}</p>
+          {ctas.length ? (
+            <div className="hero__cta">
+              {ctas.map((c, i) => (
+                <Link
+                  key={c.href}
+                  className={`btn ${i === 0 ? "btn--accent" : "btn--ghost"}`}
+                  href={c.href}
+                >
+                  {c.label}
+                </Link>
+              ))}
+            </div>
+          ) : null}
         </div>
       </section>
 
       {/* ── figures ───────────────────────────────────────────────────── */}
+      {stats.length ? (
       <section className="band band--sand">
         <div className="wrap">
           <div className="stats">
-            {STATS.map((s) => (
+            {stats.map((s) => (
               <div className="stat" key={s.figure}>
                 <p className="stat__figure">{s.figure}</p>
                 <p className="stat__label">{s.label}</p>
@@ -84,6 +107,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      ) : null}
 
       {/* ── welcome ───────────────────────────────────────────────────── */}
       {pick(home.home_OUR) ? (

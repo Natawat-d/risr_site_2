@@ -827,3 +827,32 @@ model Branding {
 
   @@map("branding")
 }
+
+/// Homepage content for the second design (risr_site2), covering only the
+/// parts that layout introduces. Pillars, vision, mission, logos and news are
+/// still read from `home` and `news`, so there is one copy of the content and
+/// both sites show it.
+model Site2Home {
+  id           Int     @id @default(autoincrement())
+  hero_heading String?
+  hero_lede    String?
+  hero_image   String?
+
+  cta1_label   String?
+  cta1_link    String?
+  cta2_label   String?
+  cta2_link    String?
+  cta3_label   String?
+  cta3_link    String?
+
+  stat1_figure String?
+  stat1_label  String?
+  stat2_figure String?
+  stat2_label  String?
+  stat3_figure String?
+  stat3_label  String?
+  stat4_figure String?
+  stat4_label  String?
+
+  @@map("site2_home")
+}

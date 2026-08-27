@@ -1,0 +1,36 @@
+# risr_site2 — the second design, running beside the original.
+#
+# It owns no database. DATABASE_URL points at the ORIGINAL site's Postgres, and
+# the container joins that compose project's network to reach it; the uploads
+# volume is mounted read-only from the same place. So there is one copy of the
+# content, one admin, and nothing this app can damage.
+#
+#   docker compose -f docker-compose.prod.yml up --build -d
+
+name: risr-site2
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-/risr2}
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-/risr2}
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      # Read-only: the original site's admin owns these files.
+      - ${UPLOADS_HOST_DIR:-/opt/risr-site/uploads-data}:/app/uploads:ro
+    ports:
+      - "127.0.0.1:${APP_PORT:-3003}:3000"
+    networks:
+      - default
+      - risr_site
+
+networks:
+  # The original site's compose project network, so `db` resolves.
+  risr_site:
+    external: true
+    name: risr-site_default
