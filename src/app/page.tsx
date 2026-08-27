@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { delegate, media, paragraphs, pick, row } from "@/lib/content";
+import { many, media, paragraphs, pick, row } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -29,10 +29,7 @@ const DEFAULT_HERO = {
 export default async function HomePage() {
   const home = await row("home");
   const v2 = await row("site2_home");
-  const news = (await delegate("news").findMany({
-    orderBy: { date: "desc" },
-    take: 3,
-  })) as Row[];
+  const news = await many("news", { orderBy: { date: "desc" }, take: 3 });
 
   const logos = [1, 2, 3, 4, 5, 6, 7]
     .map((n) => media(home[`home_logo${n}`]))

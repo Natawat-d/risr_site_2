@@ -1,0 +1,32 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+.item {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 3vw, 2rem);
+}
+.item img {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 1.1rem;
+}
+.item h3 {
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  margin-bottom: 0.75rem;
+}
+.item a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+.item a:hover {
+  text-decoration: underline;
+}

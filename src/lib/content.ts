@@ -1,18 +1,19 @@
 import { Prisma } from "@prisma/client";
+import { pick } from "./text";
+import { media } from "./paths";
 import { prisma } from "./prisma";
 
-export const BASE = (process.env.NEXT_PUBLIC_BASE_PATH || "").replace(/\/$/, "");
-
-/** A stored upload filename → the URL this app serves it from. */
-export function media(name: unknown): string {
-  const s = (name ?? "").toString().trim();
-  return s ? `${BASE}/media/${encodeURIComponent(s)}` : "";
-}
-
-/** Prefix an app-internal path. Only for raw <a href>/fetch — next/link adds it. */
-export function href(path: string): string {
-  return path.startsWith("/") ? `${BASE}${path}` : path;
-}
+export {
+  blocks,
+  clean,
+  docUrl,
+  embeddable,
+  paragraphs,
+  pick,
+  real,
+  type Block,
+} from "./text";
+export { BASE, href, media } from "./paths";
 
 /**
  * Legacy table name → Prisma delegate.
@@ -45,31 +46,50 @@ export async function row(table: string): Promise<Row> {
   }
 }
 
-/** Plain text from the CMS, as paragraphs. Legacy fields hold no markup. */
-export function paragraphs(value: unknown): string[] {
-  return (value ?? "")
-    .toString()
-    .split(/\r?\n/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
 /**
- * True when a CMS value is worth rendering.
+ * Rows from a collection, or [] if the query fails.
  *
- * Five pages carry `[value-2]`-style placeholders written into the legacy
- * database by an automated attack in 2024. They are live on risr.ac.th today
- * and were carried across faithfully — but a redesign is the right moment to
- * stop printing them, so sections built only from placeholder text are skipped
- * rather than shown to a parent.
+ * Same reasoning as `row()`: a database that is briefly unreachable should cost
+ * a section, not the page. Without this the homepage and the news list are the
+ * only two routes that 500 on a blip, because they are the only two that query
+ * a collection — every other page goes through `row()` and degrades quietly.
  */
-export function real(value: unknown): boolean {
-  const s = (value ?? "").toString().trim();
-  return !!s && !/^\[value-\d+\]$/.test(s);
+export async function many(
+  table: string,
+  args?: Record<string, unknown>,
+): Promise<Row[]> {
+  try {
+    return ((await delegate(table).findMany(args)) ?? []) as Row[];
+  } catch {
+    return [];
+  }
 }
 
-/** First value that is real, else "". */
-export function pick(...values: unknown[]): string {
-  for (const v of values) if (real(v)) return String(v).trim();
-  return "";
+/** How many rows a collection has, or 0 if the query fails. */
+export async function count(table: string): Promise<number> {
+  try {
+    return (await delegate(table).count()) as number;
+  } catch {
+    return 0;
+  }
+}
+
+/** The real values of `prefix1..prefixN`, in order, skipping gaps. */
+export function series(r: Record<string, unknown>, prefix: string, n: number): string[] {
+  const out: string[] = [];
+  for (let i = 1; i <= n; i++) {
+    const v = pick(r[`${prefix}${i}`]);
+    if (v) out.push(v);
+  }
+  return out;
+}
+
+/** The same, for upload columns — returns URLs this app can serve. */
+export function gallery(r: Record<string, unknown>, prefix: string, n: number): string[] {
+  const out: string[] = [];
+  for (let i = 1; i <= n; i++) {
+    const v = media(pick(r[`${prefix}${i}`]));
+    if (v && !out.includes(v)) out.push(v);
+  }
+  return out;
 }

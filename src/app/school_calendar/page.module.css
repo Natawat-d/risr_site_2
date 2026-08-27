@@ -1,0 +1,33 @@
+.posters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+}
+.poster {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.poster img {
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
+  object-position: top;
+  background: var(--sand);
+}
+.posterBody {
+  padding: 1.25rem 1.4rem 1.5rem;
+}
+.posterBody h3 {
+  font-family: var(--body);
+  font-weight: 650;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  margin-bottom: 1rem;
+}
+
+.feeds {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}

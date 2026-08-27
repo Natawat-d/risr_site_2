@@ -1,0 +1,241 @@
+/* ── page hero ──────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  background: var(--navy);
+  overflow: hidden;
+}
+.heroPhoto {
+  min-height: min(52vh, 460px);
+  display: grid;
+  align-items: end;
+}
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Same reasoning as the homepage: anchoring high keeps faces in frame when a
+     wide photograph is cropped into a short band. */
+  object-position: 50% 32%;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 38, 63, 0.62) 0%,
+    rgba(20, 38, 63, 0.42) 45%,
+    rgba(20, 38, 63, 0.86) 100%
+  );
+}
+.heroInner {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(3rem, 7vw, 5rem);
+}
+.heroTitle {
+  color: var(--white);
+  max-width: 20ch;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+}
+.heroLede {
+  color: #dbe4f0;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  max-width: 58ch;
+  margin: 1rem 0 0;
+}
+.heroCta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+/* ── prose ──────────────────────────────────────────────────────────────── */
+
+.prose {
+  max-width: 68ch;
+}
+.prose p {
+  margin: 0 0 1.15rem;
+}
+.prose h3 {
+  margin: 2rem 0 0.85rem;
+}
+.prose > h3:first-child {
+  margin-top: 0;
+}
+.prose ul {
+  margin: 0 0 1.15rem;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.prose li::marker {
+  color: var(--accent);
+}
+.prose a {
+  color: var(--accent);
+}
+
+/* ── feature ────────────────────────────────────────────────────────────── */
+
+.feature {
+  margin-block: clamp(2.5rem, 5vw, 4rem);
+}
+.feature:first-child {
+  margin-top: 0;
+}
+.feature:last-child {
+  margin-bottom: 0;
+}
+.featureTitle {
+  margin-bottom: 1rem;
+}
+
+/* ── gallery ────────────────────────────────────────────────────────────── */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: clamp(0.6rem, 1.5vw, 1rem);
+}
+.gallery img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+.galleryTall img {
+  aspect-ratio: 3 / 4;
+}
+
+/* ── embed ──────────────────────────────────────────────────────────────── */
+
+.embed {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--sand);
+  aspect-ratio: 16 / 10;
+}
+.embed iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+@media (max-width: 640px) {
+  .embed {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+/* ── document list ──────────────────────────────────────────────────────── */
+
+.docs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.docs a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.35rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--navy);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.docs a:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+.docLabel {
+  font-weight: 650;
+  flex: 1;
+}
+.docNote {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+.docGo {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+/* ── call to action ─────────────────────────────────────────────────────── */
+
+.cta {
+  background: var(--navy);
+}
+.ctaInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+.ctaTitle {
+  color: var(--white);
+  max-width: 22ch;
+}
+.ctaBody {
+  color: #c3d0e2;
+  max-width: 48ch;
+  margin: 0.85rem 0 0;
+}
+.ctaLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ── facts ──────────────────────────────────────────────────────────────── */
+
+.facts {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0;
+}
+@media (min-width: 800px) {
+  .facts > div {
+    display: grid;
+    grid-template-columns: minmax(160px, 220px) 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+}
+.facts > div {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.facts > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.facts dt {
+  font-family: var(--body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.facts dd {
+  margin: 0.5rem 0 0;
+}
+@media (min-width: 800px) {
+  .facts dd {
+    margin-top: 0;
+  }
+}

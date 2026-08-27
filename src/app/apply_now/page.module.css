@@ -1,0 +1,24 @@
+/* Auto-fit columns with no fixed height. The old page positioned these tiles
+   absolutely at a set size, so a list one item longer than the designer
+   expected ran over the tile below it — the overlap the school reported. */
+.ages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: start;
+}
+.age {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+.age h3 {
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+}
